@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using CSharp___WebBlog.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -12,5 +13,8 @@ namespace CSharp___WebBlog.Data
             : base(options)
         {
         }
+
+        public DbSet<Blog> Blog { get; set; }
+        public DbSet<Post> Post { get; set; }
     }
 }
