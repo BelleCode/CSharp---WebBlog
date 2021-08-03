@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Identity;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -18,5 +19,8 @@ namespace CSharp___WebBlog.Models
 
         //Nav Prop
         public virtual ICollection<Post> Posts { get; set; } = new HashSet<Post>();
+
+        public virtual Post Post { get; set; }
+        public virtual IdentityUser Author { get; set; }
     }
 }
