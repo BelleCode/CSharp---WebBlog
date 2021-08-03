@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -46,7 +47,10 @@ namespace CSharp___WebBlog.Models
         [Display(Name = "Select Image")]
         public IFormFile Image { get; set; }
 
+        //Navigation Property
         public virtual Blog Blog { get; set; }
+
+        public virtual IdentityUser Author { get; set; }
 
         public virtual ICollection<Comment> Comments { get; set; } = new HashSet<Comment>();
         public virtual ICollection<Tag> Tags { get; set; } = new HashSet<Tag>();

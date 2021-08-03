@@ -29,20 +29,21 @@ namespace CSharp___WebBlog.Models
         [Display(Name = "Updated Date")]
         public DateTime? Updated { get; set; } // short hand "public Nullable<DateTime> Updated { get; set; }"
 
-        // Navigational Properties - These properties allow us to move from one object to another related
-        public virtual ICollection<Post> Posts { get; set; } = new HashSet<Post>();
-
         //TIGHT COUPLING: public virtual List<Post> Posts { get; set; } = new List<Post>();
 
         // Addingthe properties for for describing any images being used
         [Display(Name = "Blog Image")]
         public string ImageType { get; set; }
 
-        [Display(Name = "Blog Image")]
+        [Display(Name = "Image Type")]
         public byte[] ImageData { get; set; }
 
-        [Display(Name = "Select Image")]
         [NotMapped]
         public IFormFile Image { get; set; }
+
+        // Navigational Properties - These properties allow us to move from one object to another related
+        public virtual IndentityUser Author { get; set; }
+
+        public virtual ICollection<Post> Posts { get; set; } = new HashSet<Post>();
     }
 }

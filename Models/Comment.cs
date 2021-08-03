@@ -30,10 +30,9 @@ namespace CSharp___WebBlog.Models
         public string ModeratedBody { get; set; }
 
         //Navigation Properties
-        public virtual Post Post { get; set; }        // Pav Props
+        public virtual Post Post { get; set; }
 
         public virtual IdentityUser Author { get; set; }
         public virtual IdentityUser Moderator { get; set; }
-        //public virtual BlogUser BlogUser { get; set; }
     }
 }
