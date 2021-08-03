@@ -16,19 +16,16 @@ namespace CSharp___WebBlog.Models
         public int BlogId { get; set; }
 
         [Display(Name = "Blog Name")]
-        public int BlogID { get; set; }
+        public string AuthorId { get; set; }
 
         [Required]
         [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at most {1} characters long.", MinimumLength = 2)]
         public string Title { get; set; }
 
-        // used to draw the reader
-        [Required]
+        [Required] // used to draw the reader
         [StringLength(200, ErrorMessage = "The {0} must be at least {2} and at most {1} characters long.", MinimumLength = 2)]
-        public string Abstract
-        { get; set; }
+        public string Abstract { get; set; }
 
-        // the content
         [Required]
         public string Content { get; set; }
 
@@ -41,19 +38,14 @@ namespace CSharp___WebBlog.Models
         [Display(Name = "Updated Date")]
         public DateTime? Updated { get; set; }
 
+        public bool IsReady { get; set; }
+
         public string Slug { get; set; }
 
-        /*public byte[] ImageData { get; set; }
-        public string ContentType { get; set; }
-
         [NotMapped]
-        public IFormFile Image { get; set; }*/
-
         [Display(Name = "Select Image")]
         public IFormFile Image { get; set; }
 
-        //Parent of the yet to be defined Comment class (Comment Type)
-        // Indicates this is a child of BlogID
         public virtual Blog Blog { get; set; }
 
         public virtual ICollection<Comment> Comments { get; set; } = new HashSet<Comment>();
