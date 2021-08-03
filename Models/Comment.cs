@@ -29,7 +29,7 @@ namespace CSharp___WebBlog.Models
         [Display(Name = "Moderated Comment")]
         public string ModeratedBody { get; set; }
 
-        //Navigation Properties
+        //Navigation Properties - that reference the parent => no ICollection
         public virtual Post Post { get; set; }
 
         public virtual IdentityUser Author { get; set; }
