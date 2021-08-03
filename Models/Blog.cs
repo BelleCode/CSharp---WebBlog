@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
@@ -30,5 +31,13 @@ namespace CSharp___WebBlog.Models
         public virtual ICollection<Post> Posts { get; set; } = new HashSet<Post>();
 
         //TIGHT COUPLING: public virtual List<Post> Posts { get; set; } = new List<Post>();
+
+        // Addingthe properties for for describing any images being used
+        public string ImageType { get; set; }
+
+        public byte[] ImageData { get; set; }
+
+        [Display(Name = "Select Image")]
+        public IFormFile Image { get; set; }
     }
 }

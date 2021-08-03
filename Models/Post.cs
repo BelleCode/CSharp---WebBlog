@@ -12,11 +12,11 @@ namespace CSharp___WebBlog.Models
     {
         public int Id { get; set; }
 
-        // my forein key (FK) Ca combination of a classs property key and the the blog key
-        public int BlogID { get; set; }
+        // BlogId == my foreign key (FK) Ca combination of a classs property key and the the blog key
+        public int BlogId { get; set; }
 
         [Display(Name = "Blog Name")]
-        public int BlogId { get; set; }
+        public int BlogID { get; set; }
 
         [Required]
         [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at most {1} characters long.", MinimumLength = 2)]
@@ -48,5 +48,15 @@ namespace CSharp___WebBlog.Models
 
         [NotMapped]
         public IFormFile Image { get; set; }*/
+
+        [Display(Name = "Select Image")]
+        public IFormFile Image { get; set; }
+
+        //Parent of the yet to be defined Comment class (Comment Type)
+        // Indicates this is a child of BlogID
+        public virtual Blog Blog { get; set; }
+
+        public virtual ICollection<Comment> Comments { get; set; } = new HashSet<Comment>();
+        public virtual ICollection<Tag> Tags { get; set; } = new HashSet<Tag>();
     }
 }
