@@ -11,7 +11,6 @@ namespace CSharp___WebBlog.Models
         public string Text { get; set; }
 
         //Nav Prop
-        public virtual ICollection<Post> Posts { get; set;  = new HashSet<Post>();
+        public virtual ICollection<Post> Posts { get; set; } = new HashSet<Post>();
     }
-}
 }

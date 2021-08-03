@@ -25,6 +25,6 @@ namespace CSharp___WebBlog.Models
         // Pav Props
         public virtual Post Post { get; set; }
 
-        public virtual BlogUser BlogUser { get; set; }
+        //public virtual BlogUser BlogUser { get; set; }
     }
 }
