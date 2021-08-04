@@ -9,7 +9,7 @@ namespace CSharp___WebBlog.Models
     public class Blog
     {
         public int Id { get; set; }
-        public string AuthorId { get; set; }
+        public string BlogUserId { get; set; }
 
         // public string AuthorId {get;set} for more than one author
         [Required]
@@ -42,7 +42,7 @@ namespace CSharp___WebBlog.Models
         public IFormFile Image { get; set; }
 
         // Navigational Properties - These properties allow us to move from one object to another related
-        public virtual BlogUser Author { get; set; }
+        public virtual BlogUser BlogUser { get; set; }
 
         public virtual ICollection<Post> Posts { get; set; } = new HashSet<Post>();
     }

@@ -11,7 +11,7 @@ namespace CSharp___WebBlog.Models
 
         public int PostId { get; set; } // Foreign key
 
-        public string AuthorId { get; set; }
+        public string BlogUserId { get; set; }
         public string ModeratorId { get; set; }
 
         [Required]
@@ -35,7 +35,7 @@ namespace CSharp___WebBlog.Models
         //Navigation Properties - that reference the parent => no ICollection
         public virtual Post Post { get; set; }
 
-        public virtual BlogUser Author { get; set; }
+        public virtual BlogUser BlogUser { get; set; }
         public virtual BlogUser Moderator { get; set; }
     }
 }
