@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using CSharp___WebBlog.Enums;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.ComponentModel.DataAnnotations;
 
@@ -28,6 +29,8 @@ namespace CSharp___WebBlog.Models
         [StringLength(500, ErrorMessage = "The {0} must be at least {2} and at most {1} characters long.", MinimumLength = 2)]
         [Display(Name = "Moderated Comment")]
         public string ModeratedBody { get; set; }
+
+        public ModerationType ModerationType { get; set; }
 
         //Navigation Properties - that reference the parent => no ICollection
         public virtual Post Post { get; set; }
