@@ -22,7 +22,12 @@ namespace CSharp___WebBlog.Controllers
         // GET: Blogs
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Blog.ToListAsync());
+            return View(await _context.Blogs.ToListAsync());
+        }
+
+        private IActionResult View(object p)
+        {
+            throw new NotImplementedException();
         }
 
         // GET: Blogs/Details/5
@@ -33,7 +38,7 @@ namespace CSharp___WebBlog.Controllers
                 return NotFound();
             }
 
-            var blog = await _context.Blog
+            var blog = await _context.Blogs
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (blog == null)
             {
@@ -73,7 +78,7 @@ namespace CSharp___WebBlog.Controllers
                 return NotFound();
             }
 
-            var blog = await _context.Blog.FindAsync(id);
+            var blog = await _context.Blogs.FindAsync(id);
             if (blog == null)
             {
                 return NotFound();
@@ -124,7 +129,7 @@ namespace CSharp___WebBlog.Controllers
                 return NotFound();
             }
 
-            var blog = await _context.Blog
+            var blog = await _context.Blogs
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (blog == null)
             {
@@ -139,15 +144,15 @@ namespace CSharp___WebBlog.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var blog = await _context.Blog.FindAsync(id);
-            _context.Blog.Remove(blog);
+            var blog = await _context.Blogs.FindAsync(id);
+            _context.Blogs.Remove(blog);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool BlogExists(int id)
         {
-            return _context.Blog.Any(e => e.Id == id);
+            return _context.Blogs.Any(e => e.Id == id);
         }
     }
 }

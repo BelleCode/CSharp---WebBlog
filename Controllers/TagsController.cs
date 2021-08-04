@@ -10,27 +10,22 @@ using CSharp___WebBlog.Models;
 
 namespace CSharp___WebBlog.Controllers
 {
-    public class PostsController : Controller
+    public class TagsController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public PostsController(ApplicationDbContext context)
+        public TagsController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        // GET: Posts
+        // GET: Tags
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Posts.ToListAsync());
+            return View(await _context.Tags.ToListAsync());
         }
 
-        private IActionResult View(object p)
-        {
-            throw new NotImplementedException();
-        }
-
-        // GET: Posts/Details/5
+        // GET: Tags/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -38,39 +33,39 @@ namespace CSharp___WebBlog.Controllers
                 return NotFound();
             }
 
-            var post = await _context.Posts
+            var tag = await _context.Tags
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (post == null)
+            if (tag == null)
             {
                 return NotFound();
             }
 
-            return View(post);
+            return View(tag);
         }
 
-        // GET: Posts/Create
+        // GET: Tags/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Posts/Create
+        // POST: Tags/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,BlogID,BlogId,Title,Abstract,Content,Created,Updated,Slug")] Post post)
+        public async Task<IActionResult> Create([Bind("Id,PostId,BlogUserId,Text")] Tag tag)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(post);
+                _context.Add(tag);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(post);
+            return View(tag);
         }
 
-        // GET: Posts/Edit/5
+        // GET: Tags/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -78,22 +73,22 @@ namespace CSharp___WebBlog.Controllers
                 return NotFound();
             }
 
-            var post = await _context.Posts.FindAsync(id);
-            if (post == null)
+            var tag = await _context.Tags.FindAsync(id);
+            if (tag == null)
             {
                 return NotFound();
             }
-            return View(post);
+            return View(tag);
         }
 
-        // POST: Posts/Edit/5
+        // POST: Tags/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,BlogID,BlogId,Title,Abstract,Content,Created,Updated,Slug")] Post post)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,PostId,BlogUserId,Text")] Tag tag)
         {
-            if (id != post.Id)
+            if (id != tag.Id)
             {
                 return NotFound();
             }
@@ -102,12 +97,12 @@ namespace CSharp___WebBlog.Controllers
             {
                 try
                 {
-                    _context.Update(post);
+                    _context.Update(tag);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!PostExists(post.Id))
+                    if (!TagExists(tag.Id))
                     {
                         return NotFound();
                     }
@@ -118,10 +113,10 @@ namespace CSharp___WebBlog.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(post);
+            return View(tag);
         }
 
-        // GET: Posts/Delete/5
+        // GET: Tags/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -129,30 +124,30 @@ namespace CSharp___WebBlog.Controllers
                 return NotFound();
             }
 
-            var post = await _context.Posts
+            var tag = await _context.Tags
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (post == null)
+            if (tag == null)
             {
                 return NotFound();
             }
 
-            return View(post);
+            return View(tag);
         }
 
-        // POST: Posts/Delete/5
+        // POST: Tags/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var post = await _context.Posts.FindAsync(id);
-            _context.Posts.Remove(post);
+            var tag = await _context.Tags.FindAsync(id);
+            _context.Tags.Remove(tag);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool PostExists(int id)
+        private bool TagExists(int id)
         {
-            return _context.Posts.Any(e => e.Id == id);
+            return _context.Tags.Any(e => e.Id == id);
         }
     }
 }
