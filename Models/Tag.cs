@@ -20,6 +20,6 @@ namespace CSharp___WebBlog.Models
         //Nav Prop
         public virtual ICollection<Post> Posts { get; set; } = new HashSet<Post>();
 
-        public virtual IdentityUser Author { get; set; }
+        public virtual BlogUser Author { get; set; }
     }
 }

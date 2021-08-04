@@ -42,7 +42,7 @@ namespace CSharp___WebBlog.Models
         public IFormFile Image { get; set; }
 
         // Navigational Properties - These properties allow us to move from one object to another related
-        public virtual IndentityUser Author { get; set; }
+        public virtual BlogUser Author { get; set; }
 
         public virtual ICollection<Post> Posts { get; set; } = new HashSet<Post>();
     }
