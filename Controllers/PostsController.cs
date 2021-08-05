@@ -25,11 +25,6 @@ namespace CSharp___WebBlog.Controllers
             return View(await _context.Posts.ToListAsync());
         }
 
-        private IActionResult View(object p)
-        {
-            throw new NotImplementedException();
-        }
-
         // GET: Posts/Details/5
         public async Task<IActionResult> Details(int? id)
         {
