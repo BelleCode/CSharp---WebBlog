@@ -4,7 +4,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace CSharp___WebBlog.Data.Migrations
 {
-    public partial class _001_initial : Migration
+    public partial class _001 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -27,6 +27,12 @@ namespace CSharp___WebBlog.Data.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "text", nullable: false),
+                    FirstName = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
+                    LastName = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
+                    Image = table.Column<byte[]>(type: "bytea", nullable: true),
+                    ContentType = table.Column<string>(type: "text", nullable: true),
+                    FacebookUrl = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: true),
+                    TwitterUrl = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: true),
                     UserName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
@@ -45,22 +51,6 @@ namespace CSharp___WebBlog.Data.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Blog",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
-                    Description = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: false),
-                    Created = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
-                    Updated = table.Column<DateTime>(type: "timestamp without time zone", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Blog", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -109,8 +99,8 @@ namespace CSharp___WebBlog.Data.Migrations
                 name: "AspNetUserLogins",
                 columns: table => new
                 {
-                    LoginProvider = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: false),
-                    ProviderKey = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: false),
+                    LoginProvider = table.Column<string>(type: "text", nullable: false),
+                    ProviderKey = table.Column<string>(type: "text", nullable: false),
                     ProviderDisplayName = table.Column<string>(type: "text", nullable: true),
                     UserId = table.Column<string>(type: "text", nullable: false)
                 },
@@ -154,8 +144,8 @@ namespace CSharp___WebBlog.Data.Migrations
                 columns: table => new
                 {
                     UserId = table.Column<string>(type: "text", nullable: false),
-                    LoginProvider = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: false),
-                    Name = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: false),
+                    LoginProvider = table.Column<string>(type: "text", nullable: false),
+                    Name = table.Column<string>(type: "text", nullable: false),
                     Value = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
@@ -170,27 +160,145 @@ namespace CSharp___WebBlog.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Post",
+                name: "Blogs",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    BlogID = table.Column<int>(type: "integer", nullable: false),
+                    BlogUserId = table.Column<string>(type: "text", nullable: true),
+                    Name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                    Description = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: false),
+                    Created = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    Updated = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
+                    ImageType = table.Column<string>(type: "text", nullable: true),
+                    ImageData = table.Column<byte[]>(type: "bytea", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Blogs", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Blogs_AspNetUsers_BlogUserId",
+                        column: x => x.BlogUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Tags",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    PostId = table.Column<int>(type: "integer", nullable: false),
+                    BlogUserId = table.Column<int>(type: "integer", nullable: false),
+                    Text = table.Column<string>(type: "character varying(25)", maxLength: 25, nullable: false),
+                    BlogUserId1 = table.Column<string>(type: "text", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Tags", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Tags_AspNetUsers_BlogUserId1",
+                        column: x => x.BlogUserId1,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Posts",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     BlogId = table.Column<int>(type: "integer", nullable: false),
+                    BlogUserId = table.Column<string>(type: "text", nullable: true),
                     Title = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     Abstract = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
                     Content = table.Column<string>(type: "text", nullable: false),
                     Created = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
                     Updated = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
+                    ReadyStatus = table.Column<int>(type: "integer", nullable: false),
                     Slug = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Post", x => x.Id);
+                    table.PrimaryKey("PK_Posts", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Post_Blog_BlogID",
-                        column: x => x.BlogID,
-                        principalTable: "Blog",
+                        name: "FK_Posts_AspNetUsers_BlogUserId",
+                        column: x => x.BlogUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Posts_Blogs_BlogId",
+                        column: x => x.BlogId,
+                        principalTable: "Blogs",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Comments",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    PostId = table.Column<int>(type: "integer", nullable: false),
+                    BlogUserId = table.Column<string>(type: "text", nullable: true),
+                    ModeratorId = table.Column<string>(type: "text", nullable: true),
+                    Body = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: false),
+                    Created = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    Updated = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
+                    Moderated = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
+                    Deleted = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
+                    ModeratedBody = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: true),
+                    ModerationType = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Comments", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Comments_AspNetUsers_BlogUserId",
+                        column: x => x.BlogUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Comments_AspNetUsers_ModeratorId",
+                        column: x => x.ModeratorId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Comments_Posts_PostId",
+                        column: x => x.PostId,
+                        principalTable: "Posts",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "PostTag",
+                columns: table => new
+                {
+                    PostsId = table.Column<int>(type: "integer", nullable: false),
+                    TagsId = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PostTag", x => new { x.PostsId, x.TagsId });
+                    table.ForeignKey(
+                        name: "FK_PostTag_Posts_PostsId",
+                        column: x => x.PostsId,
+                        principalTable: "Posts",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_PostTag_Tags_TagsId",
+                        column: x => x.TagsId,
+                        principalTable: "Tags",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -233,9 +341,44 @@ namespace CSharp___WebBlog.Data.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Post_BlogID",
-                table: "Post",
-                column: "BlogID");
+                name: "IX_Blogs_BlogUserId",
+                table: "Blogs",
+                column: "BlogUserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Comments_BlogUserId",
+                table: "Comments",
+                column: "BlogUserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Comments_ModeratorId",
+                table: "Comments",
+                column: "ModeratorId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Comments_PostId",
+                table: "Comments",
+                column: "PostId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Posts_BlogId",
+                table: "Posts",
+                column: "BlogId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Posts_BlogUserId",
+                table: "Posts",
+                column: "BlogUserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PostTag_TagsId",
+                table: "PostTag",
+                column: "TagsId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Tags_BlogUserId1",
+                table: "Tags",
+                column: "BlogUserId1");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -256,16 +399,25 @@ namespace CSharp___WebBlog.Data.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Post");
+                name: "Comments");
+
+            migrationBuilder.DropTable(
+                name: "PostTag");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "AspNetUsers");
+                name: "Posts");
 
             migrationBuilder.DropTable(
-                name: "Blog");
+                name: "Tags");
+
+            migrationBuilder.DropTable(
+                name: "Blogs");
+
+            migrationBuilder.DropTable(
+                name: "AspNetUsers");
         }
     }
 }

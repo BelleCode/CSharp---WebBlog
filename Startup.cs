@@ -37,7 +37,8 @@ namespace CSharp___WebBlog
             //    .AddEntityFrameworkStores<ApplicationDbContext>();
 
             services.AddIdentity<BlogUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true)
-                .AddDefaultUI()
+               .AddDefaultUI()
+               .AddDefaultTokenProviders()
                .AddEntityFrameworkStores<ApplicationDbContext>();
 
             services.AddControllersWithViews();

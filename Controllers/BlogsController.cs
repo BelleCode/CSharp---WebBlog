@@ -22,12 +22,8 @@ namespace CSharp___WebBlog.Controllers
         // GET: Blogs
         public async Task<IActionResult> Index()
         {
+            var applicationDbContext = _context.Blogs.Include(b => b.BlogUser);
             return View(await _context.Blogs.ToListAsync());
-        }
-
-        private IActionResult View(object p)
-        {
-            throw new NotImplementedException();
         }
 
         // GET: Blogs/Details/5
