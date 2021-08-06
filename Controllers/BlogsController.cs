@@ -35,6 +35,7 @@ namespace CSharp___WebBlog.Controllers
             }
 
             var blog = await _context.Blogs
+                .Include(b => b.BlogUser)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (blog == null)
             {

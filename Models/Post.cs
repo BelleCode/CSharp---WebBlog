@@ -15,6 +15,7 @@ namespace CSharp___WebBlog.Models
         public int Id { get; set; }
 
         // BlogId == my foreign key (FK) Ca combination of a classs property key and the the blog key
+        [Display(Name ="Blog Name")]
         public int BlogId { get; set; }
 
         [Display(Name = "Blog Name")]
