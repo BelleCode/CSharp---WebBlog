@@ -60,11 +60,13 @@ namespace CSharp___WebBlog.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Description,Image" +
-            "")] Blog blog)
+        public async Task<IActionResult> Create([Bind("Id, Name, Description, Image")] Blog blog)
         {
             if (ModelState.IsValid)
             {
+                blog.ImageType = _imageService.ContentType(blog.Image);
+                blog.ImageData = await _imageService.EncodeImageAsync(blog.Image);
+
                 _context.Add(blog);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
