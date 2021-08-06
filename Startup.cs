@@ -1,5 +1,6 @@
 using CSharp___WebBlog.Data;
 using CSharp___WebBlog.Models;
+using CSharp___WebBlog.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -43,6 +44,7 @@ namespace CSharp___WebBlog
 
             services.AddControllersWithViews();
             services.AddRazorPages();
+            services.AddScoped<BasicSeedService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
