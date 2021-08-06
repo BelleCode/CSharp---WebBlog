@@ -1,4 +1,7 @@
-﻿@model IEnumerable<CSharp___WebBlog.Models.Blog>
+﻿@using CSharp___WebBlog.Models
+@using CSharp___WebBlog.Services.Iterfaces
+@model IEnumerable<Blog>
+@inject IImageService ImageService
 
 @{
     ViewData["Title"] = "Index";
@@ -12,6 +15,9 @@
 <table class="table">
     <thead>
         <tr>
+            <th>
+                Image
+            </th>
             <th>
                 @Html.DisplayNameFor(model => model.Name)
             </th>
@@ -36,6 +42,9 @@
         @foreach (var blog in Model)
         {
             <tr>
+                <td>
+                    <img src="@ImageService.DecodeImage(blog.ImageData, blog.ImageType)">
+                </td>
                 <td>
                     @Html.DisplayFor(modelItem => blog.Name)
                 </td>

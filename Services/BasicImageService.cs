@@ -18,7 +18,7 @@ namespace CSharp___WebBlog.Services
         public string DecodeImage(byte[] data, string type)
         {
             if (data is null || type is null) return null;
-            return $"data:image/{type};base64,{Convert.ToBase64String(data)}";
+            return $"data:{type};base64,{Convert.ToBase64String(data)}";
         }
 
         public async Task<byte[]> EncodeImageAsync(IFormFile image)
@@ -41,6 +41,7 @@ namespace CSharp___WebBlog.Services
             return Convert.ToInt32(image?.Length);
         }
     }
+
     public class AdvancedImageService : IImageService
     {
         public string ContentType(IFormFile image)
