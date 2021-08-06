@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CSharp___WebBlog.Services.Iterfaces
 {
-    internal interface IImageService
+    public interface IImageService
     {
         Task<byte[]> EncodeImageAsync(IFormFile image);
 

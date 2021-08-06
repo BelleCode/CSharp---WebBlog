@@ -7,16 +7,19 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using CSharp___WebBlog.Data;
 using CSharp___WebBlog.Models;
+using CSharp___WebBlog.Services.Iterfaces;
 
 namespace CSharp___WebBlog.Controllers
 {
     public class BlogsController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly IImageService _imageService;
 
-        public BlogsController(ApplicationDbContext context)
+        public BlogsController(ApplicationDbContext context, IImageService imageService)
         {
             _context = context;
+            _imageService = imageService;
         }
 
         // GET: Blogs
