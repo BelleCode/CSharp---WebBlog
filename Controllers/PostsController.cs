@@ -86,6 +86,8 @@ namespace CSharp___WebBlog.Controllers
             {
                 return NotFound();
             }
+            ViewData["BlogId"] = new SelectList(_context.Blogs, "Id", "Name", post.BlogId);
+
             return View(post);
         }
 
@@ -94,7 +96,7 @@ namespace CSharp___WebBlog.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,BlogID,BlogId,Title,Abstract,Content,Created,Updated,Slug")] Post post)
+        public async Task<IActionResult> Edit(int id, [Bind("Id, BlogId,Title,Abstract,Content, Image")] Post post)
         {
             if (id != post.Id)
             {
@@ -105,6 +107,8 @@ namespace CSharp___WebBlog.Controllers
             {
                 try
                 {
+                    post.Updated = DateTime.Now;
+
                     _context.Update(post);
                     await _context.SaveChangesAsync();
                 }
