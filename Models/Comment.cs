@@ -21,7 +21,6 @@ namespace CSharp___WebBlog.Models
 
         [DataType(DataType.Date)]
         public DateTime Created { get; set; }
-
         public DateTime? Updated { get; set; } //Nullable b/c someone may NOT have updated
         public DateTime? Moderated { get; set; }
         public DateTime? Deleted { get; set; }
