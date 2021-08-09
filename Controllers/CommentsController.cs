@@ -150,7 +150,6 @@ namespace CSharp___WebBlog.Controllers
             {
                 return NotFound();
             }
-
             return View(comment);
         }
 
