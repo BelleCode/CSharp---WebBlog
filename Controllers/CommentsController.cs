@@ -19,11 +19,22 @@ namespace CSharp___WebBlog.Controllers
             _context = context;
         }
 
-        // GET: Comments
-        public async Task<IActionResult> Index()
+        // GET: Comments - The original Index
+        public async Task<IActionResult> OriginalIndex()
         {
-            var applicationDbContext = _context.Comments.Include(c => c.BlogUser).Include(c => c.Moderator).Include(c => c.Post);
-            return View(await applicationDbContext.ToListAsync());
+            var originalComments = await _context.ToListAsync();
+            return View("Index", originalComments);
+        }
+
+        public async Task<IActionResult> ModeratedIndex() {
+            var originalComments = await _context.Comments.Where (c => c.Moderated !=null)).ToListAsync();
+            eturn View("Index", originalComments);
+        }
+
+        public async Task<IActionResult> DeletedIndex()
+        {
+            var originalComments = _context.Comments.Include(c => c.BlogUser).Include(c => c.Moderator).Include(c => c.Post);
+            return View("Index", originalComments);
         }
 
         // GET: Comments/Details/5

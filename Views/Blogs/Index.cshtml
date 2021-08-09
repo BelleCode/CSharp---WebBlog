@@ -12,10 +12,10 @@
 <p>
     <a asp-action="Create">Create New Blogs</a>
 </p>
-<table class="table">
+<table class="table thead-dark">
     <thead>
         <tr>
-            <th>
+            <th class="col-2">
                 Image
             </th>
             <th>
@@ -43,7 +43,7 @@
         {
             <tr>
                 <td>
-                    <img src="@ImageService.DecodeImage(blog.ImageData, blog.ImageType)">
+                    <img class=" img-fluid" src="@ImageService.DecodeImage(blog.ImageData, blog.ImageType)">
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => blog.Name)
