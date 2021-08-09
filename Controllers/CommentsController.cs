@@ -22,19 +22,27 @@ namespace CSharp___WebBlog.Controllers
         // GET: Comments - The original Index
         public async Task<IActionResult> OriginalIndex()
         {
-            var originalComments = await _context.ToListAsync();
+            var originalComments = await _context.Comments.ToListAsync();
             return View("Index", originalComments);
         }
 
-        public async Task<IActionResult> ModeratedIndex() {
-            var originalComments = await _context.Comments.Where (c => c.Moderated !=null)).ToListAsync();
-            eturn View("Index", originalComments);
+        public async Task<IActionResult> ModeratedIndex()
+        {
+            var originalComments = await _context.Comments.Where(c => c.Moderated != null).ToListAsync();
+            return View("Index", originalComments);
         }
 
         public async Task<IActionResult> DeletedIndex()
         {
-            var originalComments = _context.Comments.Include(c => c.BlogUser).Include(c => c.Moderator).Include(c => c.Post);
+            //eager loading of data (Include...)
+            var originalComments = await _context.Comments.Include(c => c.BlogUser).Include(c => c.Moderator).Include(c => c.Post).Where(c => c.Deleted != null).ToListAsync();
             return View("Index", originalComments);
+        }
+
+        public async Task<IActionResult> Index()
+        {
+            var allComments = await _context.Comments.ToListAsync();
+            return View(allComments);
         }
 
         // GET: Comments/Details/5
@@ -58,14 +66,14 @@ namespace CSharp___WebBlog.Controllers
             return View(comment);
         }
 
-        // GET: Comments/Create
-        public IActionResult Create()
-        {
-            ViewData["BlogUserId"] = new SelectList(_context.Users, "Id", "Id");
-            ViewData["ModeratorId"] = new SelectList(_context.Users, "Id", "Id");
-            ViewData["PostId"] = new SelectList(_context.Posts, "Id", "Abstract");
-            return View();
-        }
+        // GET: Comments/Create (does not get used)
+        //public IActionResult Create()
+        //{
+        //    ViewData["BlogUserId"] = new SelectList(_context.Users, "Id", "Id");
+        //    ViewData["ModeratorId"] = new SelectList(_context.Users, "Id", "Id");
+        //    ViewData["PostId"] = new SelectList(_context.Posts, "Id", "Abstract");
+        //    return View();
+        //}
 
         // POST: Comments/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
@@ -112,31 +120,13 @@ namespace CSharp___WebBlog.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,PostId,BlogUserId,ModeratorId,Body,Created,Updated,Moderated,Deleted,ModeratedBody,ModerationType")] Comment comment)
         {
-            if (id != comment.Id)
-            {
-                return NotFound();
-            }
-
             if (ModelState.IsValid)
             {
-                try
-                {
-                    _context.Update(comment);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!CommentExists(comment.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
+                _context.Add(comment);
+                await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+
             ViewData["BlogUserId"] = new SelectList(_context.Users, "Id", "Id", comment.BlogUserId);
             ViewData["ModeratorId"] = new SelectList(_context.Users, "Id", "Id", comment.ModeratorId);
             ViewData["PostId"] = new SelectList(_context.Posts, "Id", "Abstract", comment.PostId);
