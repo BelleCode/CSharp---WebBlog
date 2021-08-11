@@ -42,6 +42,6 @@ namespace CSharp___WebBlog.Models
 
         public virtual ICollection<Blog> Blogs { get; set; } = new HashSet<Blog>();
         public virtual ICollection<Post> Posts { get; set; } = new HashSet<Post>();
-        public string DisplayName { get; internal set; }
+        public string DisplayName { get; set; }
     }
 }

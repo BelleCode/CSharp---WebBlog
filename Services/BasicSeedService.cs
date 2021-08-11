@@ -49,7 +49,7 @@ namespace CSharp___WebBlog.Services
             foreach (var role in Enum.GetNames(typeof(BlogRole)))
             {
                 // use the Role Manager to create roles
-                await _roleManager.CreateAsync(new IdentityRole("Administrator"));
+                await _roleManager.CreateAsync(new IdentityRole(role));
             }
         }
 
