@@ -2,6 +2,7 @@ using CSharp___WebBlog.Data;
 using CSharp___WebBlog.Models;
 using CSharp___WebBlog.Services;
 using CSharp___WebBlog.Services.Iterfaces;
+using CSharp___WebBlog.ViewModels;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -46,6 +47,10 @@ namespace CSharp___WebBlog
             services.AddControllersWithViews();
             services.AddRazorPages();
 
+            //Register a preconfigured instance of the MailSettings Class
+            services.Configure<MailSettings>(Configuration.GetSection("MailSettings"));
+            services.AddScoped<IBlogEmailSender, EmailService>();
+
             // Register the Basic Slug Service class as a service
             services.AddTransient<BasicSeedService>();
 
@@ -56,7 +61,7 @@ namespace CSharp___WebBlog
             //If(I am in development)
             services.AddTransient<IImageService, BasicImageService>();
             //else
-                //services.AddTransient<IImageService, AdvancedImageService>();
+            //services.AddTransient<IImageService, AdvancedImageService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
