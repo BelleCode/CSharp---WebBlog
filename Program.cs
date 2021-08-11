@@ -19,12 +19,13 @@ namespace CSharp___WebBlog
             var host = CreateHostBuilder(args).Build();
 
             // Reach into my list of registered services and grab the SeedService...
-             var seedService = host.Services
-                 .CreateScope()
-              .ServiceProvider
-            .GetRequiredService<BasicSeedService>();
+            var seedService = host.Services
+                                  .CreateScope()
+                                  .ServiceProvider
+                                  .GetRequiredService<BasicSeedService>();
 
-               await seedService.SeedDataAsync();
+            await seedService.SeedDataAsync();
+
             host.Run();
         }
 

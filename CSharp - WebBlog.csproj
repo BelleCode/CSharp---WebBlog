@@ -19,4 +19,8 @@
     <PackageReference Include="MimeKit" Version="2.14.0" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="5.0.7" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="BlogRole\Moderator\" />
+  </ItemGroup>
 </Project>
