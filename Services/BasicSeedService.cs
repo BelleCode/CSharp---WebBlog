@@ -9,6 +9,8 @@ using System.Threading.Tasks;
 
 namespace CSharp___WebBlog.Services
 {
+    // Also known as the DATASERVICE / DataService.cs from online class
+
     public class BasicSeedService
     {
         // Seed a few roles into the system
@@ -34,7 +36,7 @@ namespace CSharp___WebBlog.Services
             await _context.Database.MigrateAsync();
             // Seed a few Roles in the system
             await SeedRolesAsync();
-            // Seed a few users into the systme
+            // Seed a few users into the system and assign them to a role
             await SeedUsersAsync();
         }
 
