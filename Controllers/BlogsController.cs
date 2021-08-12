@@ -8,6 +8,8 @@ using Microsoft.EntityFrameworkCore;
 using CSharp___WebBlog.Data;
 using CSharp___WebBlog.Models;
 using CSharp___WebBlog.Services.Iterfaces;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CSharp___WebBlog.Controllers
 {
@@ -15,18 +17,19 @@ namespace CSharp___WebBlog.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly IImageService _imageService;
+        private readonly UserManager<BlogUser> _userManager;
 
-        public BlogsController(ApplicationDbContext context, IImageService imageService)
+        public BlogsController(ApplicationDbContext context, IImageService imageService, UserManager<BlogUser> userManager)
         {
             _context = context;
             _imageService = imageService;
+            _userManager = userManager;
         }
 
         // GET: Blogs
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Blogs.Include(b => b.BlogUser);
-            return View(await _context.Blogs.ToListAsync());
+            return View(await _context.Blogs.Include(b => b.BlogUser).ToListAsync());
         }
 
         // GET: Blogs/Details/5
@@ -49,6 +52,7 @@ namespace CSharp___WebBlog.Controllers
         }
 
         // GET: Blogs/Create
+        [Authorize]
         public IActionResult Create()
         {
             ViewData["BlogUserId"] = new SelectList(_context.Users, "Id", "Id");
@@ -64,8 +68,10 @@ namespace CSharp___WebBlog.Controllers
         {
             if (ModelState.IsValid)
             {
-                blog.ImageType = _imageService.ContentType(blog.Image);
+                blog.Created = DateTime.Now;
+                blog.BlogUserId = _userManager.GetUserId(User);
                 blog.ImageData = await _imageService.EncodeImageAsync(blog.Image);
+                blog.ImageType = _imageService.ContentType(blog.Image);
 
                 _context.Add(blog);
                 await _context.SaveChangesAsync();

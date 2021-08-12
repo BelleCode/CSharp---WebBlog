@@ -8,9 +8,7 @@ namespace CSharp___WebBlog.Models
     public class Comment
     {
         public int Id { get; set; }
-
         public int PostId { get; set; } // Foreign key
-
         public string BlogUserId { get; set; }
         public string ModeratorId { get; set; }
 
@@ -21,6 +19,7 @@ namespace CSharp___WebBlog.Models
 
         [DataType(DataType.Date)]
         public DateTime Created { get; set; }
+
         public DateTime? Updated { get; set; } //Nullable b/c someone may NOT have updated
         public DateTime? Moderated { get; set; }
         public DateTime? Deleted { get; set; }

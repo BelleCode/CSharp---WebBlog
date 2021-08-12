@@ -8,6 +8,6 @@ namespace CSharp___WebBlog.Services.Iterfaces
 {
     public interface IBlogEmailSender : IEmailSender
     {
-        Task SendContactEmailAsync(string emailForm, string name, string subject, string htmlMessage);
+        Task SendContactEmailAsync(string emailFrom, string name, string subject, string htmlMessage);
     }
 }

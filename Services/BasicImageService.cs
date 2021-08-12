@@ -10,11 +10,13 @@ namespace CSharp___WebBlog.Services
 {
     public class BasicImageService : IImageService
     {
+        // Take in IFormFile and return it if NOT Null
         public string ContentType(IFormFile image)
         {
             return image?.ContentType;
         }
 
+        // Provides image data and convert it to Base 64 string
         public string DecodeImage(byte[] data, string type)
         {
             if (data is null || type is null) return null;
