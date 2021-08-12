@@ -62,6 +62,9 @@ namespace CSharp___WebBlog
             services.AddTransient<IImageService, BasicImageService>();
             //else
             //services.AddTransient<IImageService, AdvancedImageService>();
+
+            //Register the Basic Slug Service
+            services.AddScoped<ISlugService, BasicSlugService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
