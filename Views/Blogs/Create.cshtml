@@ -27,7 +27,7 @@
 
             <div class="form-group">
                 <label asp-for="ImageData" class="control-label"></label>
-                <input type="file" asp-for="Image" class="form-control" />
+                <input type="file" asp-for="Image" class="form-control" accept=".jpg, .png, .jpeg, .bmp, .tiff, .gif" />
                 <span asp-validation-for="ImageData" class="text-danger"></span>
 
                 <div class="form-group">
