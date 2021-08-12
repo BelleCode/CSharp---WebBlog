@@ -7,16 +7,19 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using CSharp___WebBlog.Data;
 using CSharp___WebBlog.Models;
+using CSharp___WebBlog.Services.Iterfaces;
 
 namespace CSharp___WebBlog.Controllers
 {
     public class PostsController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly ISlugService _slugService;
 
-        public PostsController(ApplicationDbContext context)
+        public PostsController(ApplicationDbContext context, ISlugService slugService)
         {
             _context = context;
+            _slugService = slugService;
         }
 
         // GET: Posts
@@ -57,11 +60,22 @@ namespace CSharp___WebBlog.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind(",BlogId,Title,Abstract,Content,ReadyStatus,Image")] Post post)
+        public async Task<IActionResult> Create([Bind("BlogId,Title,Abstract,Content,ReadyStatus,Image")] Post post, List<string> tagValues)
         {
             if (ModelState.IsValid)
             {
                 post.Created = DateTime.Now;
+
+                //Create the slug and determine if it is unique
+                var slug = _slugService.UrlFriendly(post.Title);
+                if (!_slugService.SlugIsUnique(slug))
+                {
+                    ModelState.AddModelError("Title", "The Title you have provided cannot be used as it results in a duplicate slug.");
+                    //Add a Model State error and return the user back to the Create View
+                    ViewData["TagValues"] = string.Join(",", tagValues);
+                    return View(post);
+                }
+                post.Slug = slug;
 
                 _context.Add(post);
                 await _context.SaveChangesAsync();
