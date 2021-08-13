@@ -3,13 +3,7 @@ using CSharp___WebBlog.Services.Iterfaces;
 using CSharp___WebBlog.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-
-using CSharp___WebBlog.ViewModels;
-
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace CSharp___WebBlog.Controllers
