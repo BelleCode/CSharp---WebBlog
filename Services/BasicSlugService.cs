@@ -12,6 +12,11 @@ namespace CSharp___WebBlog.Services
     {
         private readonly ApplicationDbContext _dbContext;
 
+        public BasicSlugService(ApplicationDbContext dbContext)
+        {
+            _dbContext = dbContext;
+        }
+
         public bool SlugIsUnique(string slug)
         {
             return !_dbContext.Posts.Any(p => p.Slug == slug);

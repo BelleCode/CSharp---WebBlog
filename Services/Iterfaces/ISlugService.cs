@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace CSharp___WebBlog.Services.Iterfaces
 {
-    internal interface ISlugService
+    public interface ISlugService
     {
         string UrlFriendly(string title);
 
