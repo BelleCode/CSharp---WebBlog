@@ -1,28 +1,36 @@
-﻿@model IEnumerable<CSharp___WebBlog.Models.Blog>
+﻿@using CSharp___WebBlog.Models
+@using CSharp___WebBlog.Services.Iterfaces
+@model IEnumerable<Blog>
+@inject IImageService ImageService
 
 @{
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1>Index of Blogs</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create">Create a New Blog</a>
 </p>
-<table class="table">
+<table class="table thead-dark">
     <thead>
         <tr>
+            <th class="col-2">
+                Image
+            </th>
             <th>
                 @Html.DisplayNameFor(model => model.Name)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Description)
+                @*@Html.DisplayNameFor(model => model.Description)*@
+                Description
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Created)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Updated)
+                @*@Html.DisplayNameFor(model => model.Updated)*@
+                Last Updated
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.BlogUser)
@@ -35,19 +43,23 @@
         {
             <tr>
                 <td>
+                    <img class=" img-fluid" src="@ImageService.DecodeImage(blog.ImageData, blog.ImageType)">
+                </td>
+                <td>
                     @Html.DisplayFor(modelItem => blog.Name)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => blog.Description)
+                    @*@Html.DisplayFor(modelItem => blog.Description)*@
+                    Description
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => blog.Created)
                 </td>
                 <th>
-                    @Html.DisplayNameFor(model => model.Updated)
+                    @Html.DisplayFor(model => blog.Updated)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.BlogUser.Id)
+                    @Html.DisplayFor(model => blog.Id)
                 </th>
                 <td>
                     <a asp-action="Edit" asp-route-id="@blog.Id">Edit</a> |

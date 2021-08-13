@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
+using CSharp___WebBlog.Services.Iterfaces;
 
 namespace CSharp___WebBlog.Areas.Identity.Pages.Account.Manage
 {
@@ -18,12 +19,12 @@ namespace CSharp___WebBlog.Areas.Identity.Pages.Account.Manage
     {
         private readonly UserManager<BlogUser> _userManager;
         private readonly SignInManager<BlogUser> _signInManager;
-        private readonly IEmailSender _emailSender;
+        private readonly IBlogEmailSender _emailSender;
 
         public EmailModel(
             UserManager<BlogUser> userManager,
             SignInManager<BlogUser> signInManager,
-            IEmailSender emailSender)
+            IBlogEmailSender emailSender)
         {
             _userManager = userManager;
             _signInManager = signInManager;

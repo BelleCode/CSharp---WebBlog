@@ -1,18 +1,15 @@
 using CSharp___WebBlog.Data;
 using CSharp___WebBlog.Models;
+using CSharp___WebBlog.Services;
+using CSharp___WebBlog.Services.Iterfaces;
+using CSharp___WebBlog.ViewModels;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace CSharp___WebBlog
 {
@@ -30,7 +27,7 @@ namespace CSharp___WebBlog
         {
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseNpgsql(
-                    Configuration.GetConnectionString("DefaultConnection")));
+                    Connection.GetConnectionString(Configuration)));
             services.AddDatabaseDeveloperPageExceptionFilter();
 
             //services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
@@ -43,6 +40,25 @@ namespace CSharp___WebBlog
 
             services.AddControllersWithViews();
             services.AddRazorPages();
+
+            //Register a preconfigured instance of the MailSettings Class
+            services.Configure<MailSettings>(Configuration.GetSection("MailSettings"));
+            services.AddScoped<IBlogEmailSender, EmailService>();
+
+            // Register the Basic Slug Service class as a service
+            services.AddTransient<BasicSeedService>();
+
+            // Register the SeedService as a Transient
+            services.AddScoped<BasicSeedService>();
+
+            //Register the concrete Basic Image Service class to be used with the IImage Service Interface
+            //If(I am in development)
+            services.AddTransient<IImageService, BasicImageService>();
+            //else
+            //services.AddTransient<IImageService, AdvancedImageService>();
+
+            //Register the Basic Slug Service
+            services.AddScoped<ISlugService, BasicSlugService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

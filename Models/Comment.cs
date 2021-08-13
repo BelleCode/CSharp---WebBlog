@@ -8,9 +8,7 @@ namespace CSharp___WebBlog.Models
     public class Comment
     {
         public int Id { get; set; }
-
         public int PostId { get; set; } // Foreign key
-
         public string BlogUserId { get; set; }
         public string ModeratorId { get; set; }
 

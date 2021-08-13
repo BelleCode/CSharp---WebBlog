@@ -9,7 +9,9 @@ namespace CSharp___WebBlog.Models
 {
     public class Tag
     {
+        // Primary Key on Database
         public int Id { get; set; }
+
         public int PostId { get; set; }
         public int BlogUserId { get; set; }
 

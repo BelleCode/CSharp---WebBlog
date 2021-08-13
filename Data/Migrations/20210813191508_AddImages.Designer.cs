@@ -10,8 +10,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace CSharp___WebBlog.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210804184949_001")]
-    partial class _001
+    [Migration("20210813191508_AddImages")]
+    partial class AddImages
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -73,6 +73,9 @@ namespace CSharp___WebBlog.Data.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("ContentType")
+                        .HasColumnType("text");
+
+                    b.Property<string>("DisplayName")
                         .HasColumnType("text");
 
                     b.Property<string>("Email")
@@ -223,6 +226,12 @@ namespace CSharp___WebBlog.Data.Migrations
 
                     b.Property<DateTime>("Created")
                         .HasColumnType("timestamp without time zone");
+
+                    b.Property<byte[]>("ImageData")
+                        .HasColumnType("bytea");
+
+                    b.Property<string>("ImageType")
+                        .HasColumnType("text");
 
                     b.Property<int>("ReadyStatus")
                         .HasColumnType("integer");

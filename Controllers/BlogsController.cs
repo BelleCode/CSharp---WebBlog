@@ -7,23 +7,29 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using CSharp___WebBlog.Data;
 using CSharp___WebBlog.Models;
+using CSharp___WebBlog.Services.Iterfaces;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CSharp___WebBlog.Controllers
 {
     public class BlogsController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly IImageService _imageService;
+        private readonly UserManager<BlogUser> _userManager;
 
-        public BlogsController(ApplicationDbContext context)
+        public BlogsController(ApplicationDbContext context, IImageService imageService, UserManager<BlogUser> userManager)
         {
             _context = context;
+            _imageService = imageService;
+            _userManager = userManager;
         }
 
         // GET: Blogs
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Blogs.Include(b => b.BlogUser);
-            return View(await _context.Blogs.ToListAsync());
+            return View(await _context.Blogs.Include(b => b.BlogUser).ToListAsync());
         }
 
         // GET: Blogs/Details/5
@@ -35,6 +41,7 @@ namespace CSharp___WebBlog.Controllers
             }
 
             var blog = await _context.Blogs
+                .Include(b => b.BlogUser)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (blog == null)
             {
@@ -45,6 +52,7 @@ namespace CSharp___WebBlog.Controllers
         }
 
         // GET: Blogs/Create
+        [Authorize]
         public IActionResult Create()
         {
             ViewData["BlogUserId"] = new SelectList(_context.Users, "Id", "Id");
@@ -56,10 +64,15 @@ namespace CSharp___WebBlog.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Description,Created,Updated")] Blog blog)
+        public async Task<IActionResult> Create([Bind("Id, Name, Description, Image")] Blog blog)
         {
             if (ModelState.IsValid)
             {
+                blog.Created = DateTime.Now;
+                blog.BlogUserId = _userManager.GetUserId(User);
+                blog.ImageData = await _imageService.EncodeImageAsync(blog.Image);
+                blog.ImageType = _imageService.ContentType(blog.Image);
+
                 _context.Add(blog);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -88,7 +101,7 @@ namespace CSharp___WebBlog.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Name, Description, Image")] Blog blog)
+        public async Task<IActionResult> Edit(int id, [Bind("Id, Name, Description, Image, ImageData, ImageType")] Blog blog)
         {
             if (id != blog.Id)
             {
@@ -99,6 +112,15 @@ namespace CSharp___WebBlog.Controllers
             {
                 try
                 {
+                    blog.Updated = DateTime.Now;
+                    var newImageData = await _imageService.EncodeImageAsync(blog.Image);
+
+                    if (blog.ImageData != newImageData && blog.Image != null)
+                    {
+                        blog.ImageType = _imageService.ContentType(blog.Image);
+                        blog.ImageData = newImageData;
+                    }
+
                     _context.Update(blog);
                     await _context.SaveChangesAsync();
                 }
