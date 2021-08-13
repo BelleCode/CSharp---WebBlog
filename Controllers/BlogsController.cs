@@ -101,7 +101,7 @@ namespace CSharp___WebBlog.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id, Name, Description, Image")] Blog blog)
+        public async Task<IActionResult> Edit(int id, [Bind("Id, Name, Description, Image, ImageData, ImageType")] Blog blog)
         {
             if (id != blog.Id)
             {
@@ -112,6 +112,15 @@ namespace CSharp___WebBlog.Controllers
             {
                 try
                 {
+                    blog.Updated = DateTime.Now;
+                    var newImageData = await _imageService.EncodeImageAsync(blog.Image);
+
+                    if (blog.ImageData != newImageData && blog.Image != null)
+                    {
+                        blog.ImageType = _imageService.ContentType(blog.Image);
+                        blog.ImageData = newImageData;
+                    }
+
                     _context.Update(blog);
                     await _context.SaveChangesAsync();
                 }

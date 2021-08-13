@@ -15,7 +15,7 @@ namespace CSharp___WebBlog.Models
         public int Id { get; set; }
 
         // BlogId == my foreign key (FK) Ca combination of a classs property key and the the blog key
-        [Display(Name ="Blog Name")]
+        [Display(Name = "Blog Name")]
         public int BlogId { get; set; }
 
         [Display(Name = "Blog Name")]
@@ -45,8 +45,14 @@ namespace CSharp___WebBlog.Models
 
         public string Slug { get; set; }
 
+        // Addingthe properties for for describing any images being used
+        [Display(Name = "Blog Image")]
+        public string ImageType { get; set; }
+
+        [Display(Name = "Image Type")]
+        public byte[] ImageData { get; set; }
+
         [NotMapped]
-        [Display(Name = "Select Image")]
         public IFormFile Image { get; set; }
 
         //Navigation Property

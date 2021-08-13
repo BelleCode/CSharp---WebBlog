@@ -15,11 +15,13 @@ namespace CSharp___WebBlog.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly ISlugService _slugService;
+        private readonly IImageService _imageService;
 
-        public PostsController(ApplicationDbContext context, ISlugService slugService)
+        public PostsController(ApplicationDbContext context, ISlugService slugService, IImageService imageService)
         {
             _context = context;
             _slugService = slugService;
+            _imageService = imageService;
         }
 
         // GET: Posts
@@ -65,6 +67,8 @@ namespace CSharp___WebBlog.Controllers
             if (ModelState.IsValid)
             {
                 post.Created = DateTime.Now;
+                post.ImageData = await _imageService.EncodeImageAsync(post.Image);
+                post.ImageType = _imageService.ContentType(post.Image);
 
                 //Create the slug and determine if it is unique
                 var slug = _slugService.UrlFriendly(post.Title);
@@ -110,7 +114,7 @@ namespace CSharp___WebBlog.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id, BlogId,Title,Abstract,Content, Image")] Post post)
+        public async Task<IActionResult> Edit(int id, [Bind("Id, Created, BlogId,Title,Abstract,Content, Image, ImageType, ImageData, Slug")] Post post)
         {
             if (id != post.Id)
             {
@@ -122,7 +126,31 @@ namespace CSharp___WebBlog.Controllers
                 try
                 {
                     post.Updated = DateTime.Now;
+                    var newImageData = await _imageService.EncodeImageAsync(post.Image);
+                    var newSlug = _slugService.UrlFriendly(post.Title);
 
+                    if (newSlug != post.Slug)
+                    {
+                        if (_slugService.SlugIsUnique(newSlug))
+                        {
+                            post.Slug = newSlug;
+                        }
+                        else
+                        {
+                            //I have determined that the Title results in a duplicate Slug...
+                            ModelState.AddModelError("Title", "The Title you entered cannot be used please try again");
+                            ModelState.AddModelError("", "There was an error related to the Title...");
+
+                            ViewData["BlogId"] = new SelectList(_context.Blogs, "Id", "Name", post.BlogId);
+                            return View(post);
+                        }
+                    }
+
+                    if (post.ImageData != newImageData && post.Image != null)
+                    {
+                        post.ImageType = _imageService.ContentType(post.Image);
+                        post.ImageData = newImageData;
+                    }
                     _context.Update(post);
                     await _context.SaveChangesAsync();
                 }
