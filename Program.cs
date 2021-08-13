@@ -25,6 +25,7 @@ namespace CSharp___WebBlog
                                   .GetRequiredService<BasicSeedService>();
 
             await seedService.SeedDataAsync();
+            //await seedService.ManageDataAsync();
 
             host.Run();
         }

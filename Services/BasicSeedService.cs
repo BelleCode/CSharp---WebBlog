@@ -29,6 +29,11 @@ namespace CSharp___WebBlog.Services
             _userManager = userManager;
         }
 
+        //public async Task ManageDataAsync()
+        //{
+        //    await _context.Database.MigrateAsync();
+        //}
+
         // This is a wrapper method
         public async Task SeedDataAsync()
         {
