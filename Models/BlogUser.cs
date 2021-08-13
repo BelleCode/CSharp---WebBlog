@@ -20,7 +20,8 @@ namespace CSharp___WebBlog.Models
         [Display(Name = "Last Name")]
         public string LastName { get; set; }
 
-        public byte[] Image { get; set; }
+        public string ImageType { get; set; }
+        public byte[] ImageData { get; set; }
         public string ContentType { get; set; }
 
         [StringLength(50, ErrorMessage = "The {0} must be at least {2} and no more than {1} character long", MinimumLength = 2)]
