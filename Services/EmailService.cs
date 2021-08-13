@@ -29,6 +29,7 @@ namespace CSharp___WebBlog.Services
             email.Subject = subject;
 
             var builder = new BodyBuilder();
+            builder.HtmlBody = htmlMessage;
 
             email.Body = builder.ToMessageBody();
 

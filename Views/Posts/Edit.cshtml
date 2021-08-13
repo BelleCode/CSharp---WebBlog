@@ -5,6 +5,8 @@
     ViewData["Title"] = "Edit";
 }
 
+<link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
+
 <h1>Edit a Post</h1>
 
 <h4>Edit Post</h4>
@@ -62,6 +64,16 @@
     <a asp-action="Index">Back to List</a>
 </div>
 
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+@section Scripts{
+
+    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('#Content').summernote(
+                {
+                    height: 300
+                });
+        });
+    </script>
 }

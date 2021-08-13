@@ -4,6 +4,8 @@
     ViewData["Title"] = "Create";
 }
 
+<link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
+
 <h1>Create a Post</h1>
 
 <h4>New Post</h4>
@@ -44,7 +46,7 @@
 
             <div class="form-group">
                 <label asp-for="Image" class="control-label"></label>
-                <input type = "file" asp-for="Image" class="form-control">
+                <input type="file" asp-for="Image" class="form-control">
                 <span asp-validation-for="Image" class="text-danger"></span>
             </div>
 
@@ -59,6 +61,16 @@
     <a asp-action="Index">Back to List</a>
 </div>
 
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+@section Scripts{
+
+    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('#Content').summernote(
+                {
+                    height: 300
+                });
+        });
+    </script>
 }

@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
-using CSharp___WebBlog.Services.Iterfaces;
 
 namespace CSharp___WebBlog.Areas.Identity.Pages.Account
 {
@@ -15,9 +14,9 @@ namespace CSharp___WebBlog.Areas.Identity.Pages.Account
     public class RegisterConfirmationModel : PageModel
     {
         private readonly UserManager<BlogUser> _userManager;
-        private readonly IBlogEmailSender _sender;
+        private readonly IEmailSender _sender;
 
-        public RegisterConfirmationModel(UserManager<BlogUser> userManager, IBlogEmailSender sender)
+        public RegisterConfirmationModel(UserManager<BlogUser> userManager, IEmailSender sender)
         {
             _userManager = userManager;
             _sender = sender;
